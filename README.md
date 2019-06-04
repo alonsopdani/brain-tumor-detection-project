@@ -13,3 +13,8 @@
 # demo
 # intro, why image processing is different
 # libraries used
+
+
+preguntar cómo puedo hacer para, a la hora de realizar el test, mostrar la imagen original para ver si ha acertado
+
+ver cómo hacer el pipeline (cuántas lineas van en el main)
