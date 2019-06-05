@@ -9,6 +9,7 @@ import glob
 from PIL import Image
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.model_selection import train_test_split
 from sklearn.cluster import KMeans
