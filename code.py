@@ -213,7 +213,7 @@ def neural_network_architecture(X_train, X_test, y_train, y_test, img_rows, img_
 def fit_neural_network(model, X_train, X_test, y_train, y_test):
     # Fit the NN
     batch_size = 10
-    epochs = 5
+    epochs = 1
 
     model.fit(X_train, y_train,
             batch_size=batch_size,
@@ -228,4 +228,28 @@ def evaluate_model(model, X_test, y_test):
     result = 'Test loss: {}, Test accuracy: {}'.format(score[0], score[1])
     print(result)
 
-    return result
+    y_pred = [int(round(model.predict(np.expand_dims(e,axis=0))[0][0])) for e in X_test]
+    y_true = [int(e[0]) for e in y_test]
+    
+    # confusion matrix
+    def cm(y_true, y_pred):
+        return confusion_matrix(y_true, y_pred)
+
+    cm = cm(y_true, y_pred)
+
+    plt.clf()
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Wistia)
+    classNames = ['Negative','Positive']
+    plt.title('Tumor or Not Tumor Confusion Matrix - Test Data')
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    tick_marks = np.arange(len(classNames))
+    plt.xticks(tick_marks, classNames, rotation=45)
+    plt.yticks(tick_marks, classNames)
+    s = [['TN','FP'], ['FN', 'TP']]
+    for i in range(2):
+        for j in range(2):
+            plt.text(j,i, str(s[i][j])+" = "+str(cm[i][j]))
+    plt.show()
+
+    return None
