@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import random
+import warnings
 
 import cv2
 import glob
@@ -11,6 +12,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
 from sklearn.cluster import KMeans
+from sklearn.metrics import confusion_matrix
 
 import keras
 from keras.datasets import mnist
@@ -29,9 +31,9 @@ def import_data():
 
     images_y = read_images(path_y)
     images_n = read_images(path_n)
-
+    print('images imported')
     return images_y, images_n
-
+    
 # image preparation
 def preparation(images_y, images_n):
     # squaring images function:
@@ -52,24 +54,28 @@ def preparation(images_y, images_n):
         return res
 
     images_y, images_n = square_image(images_y), square_image(images_n)
+    print('images squared')
 
     # now we want to reshape all the images to 128x128
     def resize_images(list_of_images, size=128):
         return [img.resize((size,size)) for img in list_of_images]
 
     images_y, images_n = resize_images(images_y), resize_images(images_n)
+    print('images resized')
 
     # now we start to use open cv library, that works with numpy arrays instead of images
     def image_to_nparray(list_of_images):
         return [np.array(img) for img in list_of_images]
 
     images_y, images_n = image_to_nparray(images_y), image_to_nparray(images_n)
+    print('images as np arrays')
 
     # function to get gray scale images
     def img_to_gray_scale(list_of_images):
         return [cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) for img in list_of_images]
 
     images_y, images_n = img_to_gray_scale(images_y), img_to_gray_scale(images_n)
+    print('images in gray scale')
 
     '''
     # convert all images from gray to color
@@ -103,9 +109,9 @@ def preparation(images_y, images_n):
         brain_out[closing==False] = (0,0,0)
         return brain_out
 
-        # function to apply the previous one in the whole list
-        def skull_removal_list(list_of_images):
-            return [skull_removal(img) for img in list_of_images]
+    # function to apply the previous one in the whole list
+    def skull_removal_list(list_of_images):
+        return [skull_removal(img) for img in list_of_images]
 
     images_y, images_n = skull_removal_list(images_y), skull_removal_list(images_n)
     '''
@@ -115,6 +121,7 @@ def preparation(images_y, images_n):
         return [cv2.medianBlur(img,1) for img in list_of_images]
 
     images_y, images_n = median_filter(images_y), median_filter(images_n)
+    print('median filter applied')
 
     '''
     # function to transform list of images to b&w
@@ -136,6 +143,7 @@ def dataframe_preparation(images_y, images_n):
         return pd.DataFrame([img.flatten() for img in list_of_images])
 
     images_y, images_n = list_np_to_pd(images_y), list_np_to_pd(images_n)
+    print('dataframe ready')
 
     # preparation of the dataframes for the neural network
     # input image dimensions
@@ -146,13 +154,11 @@ def dataframe_preparation(images_y, images_n):
 
     num_y = df_y.values.shape[1]
     num_n = df_n.values.shape[1]
-    print("y:{} n:{}".format(num_y, num_n))
 
     yes = df_y.values.reshape((img_rows, img_cols, num_y))
     no = df_n.values.reshape((img_rows, img_cols, num_n))
     X = np.concatenate((yes,no), axis=2).swapaxes(2,0)
     y = np.concatenate((np.ones(num_y),np.zeros(num_n)))
-    print("Shapes X={} y={}".format(X.shape,y.shape))
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
@@ -179,10 +185,6 @@ def neural_network_architecture(X_train, X_test, y_train, y_test, img_rows, img_
     X_train /= 255
     X_test /= 255
 
-    print('x_train shape:', X_train.shape)
-    print(X_train.shape[0], 'train samples')
-    print(X_test.shape[0], 'test samples')
-
     # convert class vectors to binary class matrices
     y_train = keras.utils.to_categorical(y_train, num_classes)
     y_test = keras.utils.to_categorical(y_test, num_classes)
@@ -203,24 +205,26 @@ def neural_network_architecture(X_train, X_test, y_train, y_test, img_rows, img_
     model.compile(loss=keras.losses.categorical_crossentropy,
                 optimizer=keras.optimizers.Adadelta(),
                 metrics=['accuracy'])
-
+    
+    print('model created')
     return model, X_train, X_test, y_train, y_test
 
 def fit_neural_network(model, X_train, X_test, y_train, y_test):
     # Fit the NN
-    batch_size = 20
-    epochs = 10
+    batch_size = 10
+    epochs = 5
 
     model.fit(X_train, y_train,
             batch_size=batch_size,
             epochs=epochs,
             verbose=1,
             validation_data=(X_test, y_test))
+    print('training model')
     return model
 
 def evaluate_model(model, X_test, y_test):
     score = model.evaluate(X_test, y_test, verbose=0)
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
     result = 'Test loss: {}, Test accuracy: {}'.format(score[0], score[1])
+    print(result)
+
     return result
