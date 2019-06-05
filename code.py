@@ -22,6 +22,18 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 
+# function to show images
+def show_images(img1, img2):
+    plt.subplot(1,2,1)
+    plt.imshow(img1)
+    plt.title('Brain with tumor')
+    plt.subplot(1,2,2)
+    plt.imshow(img2)
+    plt.title('Brain without tumor')
+    plt.show()
+
+images_to_show = (0, 0)
+
 # import images
 def import_data():    
     def read_images(path):
@@ -33,6 +45,7 @@ def import_data():
     images_y = read_images(path_y)
     images_n = read_images(path_n)
     print('images imported')
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
     return images_y, images_n
     
 # image preparation
@@ -56,6 +69,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = square_image(images_y), square_image(images_n)
     print('images squared')
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
 
     # now we want to reshape all the images to 128x128
     def resize_images(list_of_images, size=128):
@@ -63,6 +77,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = resize_images(images_y), resize_images(images_n)
     print('images resized')
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
 
     # now we start to use open cv library, that works with numpy arrays instead of images
     def image_to_nparray(list_of_images):
@@ -77,6 +92,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = img_to_gray_scale(images_y), img_to_gray_scale(images_n)
     print('images in gray scale')
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
 
     '''
     # convert all images from gray to color
@@ -123,6 +139,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = median_filter(images_y), median_filter(images_n)
     print('median filter applied')
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
 
     '''
     # function to transform list of images to b&w
@@ -161,7 +178,7 @@ def dataframe_preparation(images_y, images_n):
     X = np.concatenate((yes,no), axis=2).swapaxes(2,0)
     y = np.concatenate((np.ones(num_y),np.zeros(num_n)))
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     return X_train, X_test, y_train, y_test, img_rows, img_cols
 
@@ -212,8 +229,8 @@ def neural_network_architecture(X_train, X_test, y_train, y_test, img_rows, img_
 
 def fit_neural_network(model, X_train, X_test, y_train, y_test):
     # Fit the NN
-    batch_size = 10
-    epochs = 1
+    batch_size = 30
+    epochs = 5
 
     model.fit(X_train, y_train,
             batch_size=batch_size,
@@ -238,7 +255,7 @@ def evaluate_model(model, X_test, y_test):
     cm = cm(y_true, y_pred)
 
     plt.clf()
-    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Wistia)
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
     classNames = ['Negative','Positive']
     plt.title('Tumor or Not Tumor Confusion Matrix - Test Data')
     plt.ylabel('True label')
