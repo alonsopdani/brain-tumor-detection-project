@@ -189,22 +189,22 @@ def neural_network_architecture(X_train, X_test, y_train, y_test, img_rows, img_
 
     # This is the neural network proposed architecture
     model = Sequential()
-    model = model.add(Conv2D(32, kernel_size=(3, 3),
+    model.add(Conv2D(32, kernel_size=(3, 3),
                     activation='relu',
                     input_shape=input_shape))
-    model = model.add(Conv2D(64, (3, 3), activation='relu'))
-    model = model.add(MaxPooling2D(pool_size=(2, 2)))
-    model = model.add(Dropout(0.25))
-    model = model.add(Flatten())
-    model = model.add(Dense(128, activation='relu'))
-    model = model.add(Dropout(0.5))
-    model = model.add(Dense(num_classes, activation='softmax'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(num_classes, activation='softmax'))
 
-    model = model.compile(loss=keras.losses.categorical_crossentropy,
+    model.compile(loss=keras.losses.categorical_crossentropy,
                 optimizer=keras.optimizers.Adadelta(),
                 metrics=['accuracy'])
 
-    return model
+    return model, X_train, X_test, y_train, y_test
 
 def fit_neural_network(model, X_train, X_test, y_train, y_test):
     # Fit the NN
@@ -222,3 +222,5 @@ def evaluate_model(model, X_test, y_test):
     score = model.evaluate(X_test, y_test, verbose=0)
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
+    result = 'Test loss: {}, Test accuracy: {}'.format(score[0], score[1])
+    return result
