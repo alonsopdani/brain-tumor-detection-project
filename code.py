@@ -33,6 +33,7 @@ def show_images(img1, img2):
     plt.show()
 
 images_to_show = (0, 0)
+size_images = 128
 
 # import images
 def import_data():    
@@ -72,7 +73,7 @@ def preparation(images_y, images_n):
     show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
 
     # now we want to reshape all the images to 128x128
-    def resize_images(list_of_images, size=128):
+    def resize_images(list_of_images, size=size_images):
         return [img.resize((size,size)) for img in list_of_images]
 
     images_y, images_n = resize_images(images_y), resize_images(images_n)
@@ -141,7 +142,7 @@ def preparation(images_y, images_n):
     print('median filter applied')
     show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
 
-    '''
+    
     # function to transform list of images to b&w
     # I get the element 1 because it returs a tuple (threshold, image)
     # meaning of the threshold: 0 is black, 255 is white, so I set that the pixels which are below 127
@@ -150,7 +151,8 @@ def preparation(images_y, images_n):
         return [cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)[1] for img in list_of_images]
 
     images_y, images_n = images_to_bw(images_y), images_to_bw(images_n)
-    '''
+    print('b&w applied')
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])    
 
     return images_y, images_n
 
@@ -165,7 +167,7 @@ def dataframe_preparation(images_y, images_n):
 
     # preparation of the dataframes for the neural network
     # input image dimensions
-    img_rows, img_cols = 128, 128
+    img_rows, img_cols = size_images, size_images
 
     df_y = images_y.T
     df_n = images_n.T
@@ -229,8 +231,8 @@ def neural_network_architecture(X_train, X_test, y_train, y_test, img_rows, img_
 
 def fit_neural_network(model, X_train, X_test, y_train, y_test):
     # Fit the NN
-    batch_size = 30
-    epochs = 5
+    batch_size = 20
+    epochs = 10
 
     model.fit(X_train, y_train,
             batch_size=batch_size,
