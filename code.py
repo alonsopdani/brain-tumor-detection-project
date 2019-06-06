@@ -23,16 +23,17 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 
 # function to show images
-def show_images(img1, img2):
+def show_images(img1, img2, name):
     plt.subplot(1,2,1)
-    plt.imshow(img1)
+    plt.imshow(img1, cmap="gray")
     plt.title('Brain with tumor')
     plt.subplot(1,2,2)
-    plt.imshow(img2)
+    plt.imshow(img2, cmap="gray")
     plt.title('Brain without tumor')
+    plt.savefig('./pics/{}'.format(name))
     plt.show()
 
-images_to_show = (0, 0)
+images_to_show = (33, 18)
 size_images = 128
 
 # import images
@@ -46,7 +47,7 @@ def import_data():
     images_y = read_images(path_y)
     images_n = read_images(path_n)
     print('images imported')
-    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]], '0-raw.png')
     return images_y, images_n
     
 # image preparation
@@ -70,7 +71,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = square_image(images_y), square_image(images_n)
     print('images squared')
-    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]], '1-squared.png')
 
     # now we want to reshape all the images to 128x128
     def resize_images(list_of_images, size=size_images):
@@ -78,7 +79,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = resize_images(images_y), resize_images(images_n)
     print('images resized')
-    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]], '2-resized.png')
 
     # now we start to use open cv library, that works with numpy arrays instead of images
     def image_to_nparray(list_of_images):
@@ -93,7 +94,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = img_to_gray_scale(images_y), img_to_gray_scale(images_n)
     print('images in gray scale')
-    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]], '3-grayscale.png')
 
     '''
     # convert all images from gray to color
@@ -140,7 +141,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = median_filter(images_y), median_filter(images_n)
     print('median filter applied')
-    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]], '4-filtered.png')
 
     
     # function to transform list of images to b&w
@@ -152,7 +153,7 @@ def preparation(images_y, images_n):
 
     images_y, images_n = images_to_bw(images_y), images_to_bw(images_n)
     print('b&w applied')
-    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]])    
+    show_images(images_y[images_to_show[0]], images_n[images_to_show[1]], '5-b&w')    
 
     return images_y, images_n
 
@@ -258,7 +259,7 @@ def evaluate_model(model, X_test, y_test):
 
     plt.clf()
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-    classNames = ['Negative','Positive']
+    classNames = ['Tumor','Not tumor']
     plt.title('Tumor or Not Tumor Confusion Matrix - Test Data')
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
@@ -269,6 +270,7 @@ def evaluate_model(model, X_test, y_test):
     for i in range(2):
         for j in range(2):
             plt.text(j,i, str(s[i][j])+" = "+str(cm[i][j]))
+    plt.savefig('./pics/cm')
     plt.show()
 
     return None
