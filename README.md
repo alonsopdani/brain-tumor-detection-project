@@ -4,7 +4,7 @@ El proyecto se trata de un programa que, a partir de una imagen de resonancia ma
 
 ## **Objetivos**
 
-El resultado al pasarle una imágen es un porcentaje de que exista tumor en ese cerebro, por tanto, los médicos podrían ahorrarse el tiempo invertido en ver todas las resonancias magnéticas e irse directamente a las que tienen un cierto porcentaje mínimo de tener un tumor, por ejemplo, > 10%.
+Ahorro de tiempo de los médicos: el resultado al pasarle una imágen es un porcentaje de que exista tumor en ese cerebro, por tanto, los médicos podrían ahorrarse el tiempo invertido en ver todas las resonancias magnéticas e irse directamente a las que tienen un cierto porcentaje mínimo de tener un tumor, por ejemplo, > 10%.
 
 Ayuda de la máquina a detectar tumores. Si se perfecciona este programa hasta el punto de que el porcentaje de acierto es muy alto, la tarea de detectar tumores puede pasar del médico a la máquina, ya que esta podría tener más memoria y capacidad para hacerlo que una persona humana. Este sería un caso claro de la cooperación entre humanos e inteligencia artificial.
     
@@ -12,11 +12,9 @@ Ayuda de la máquina a detectar tumores. Si se perfecciona este programa hasta e
 
 El dataset es un conjunto de MRIs, una carpeta con tumores y otra sin tumores.
 
-## **Procedimiento técnico**
+## **Procedimiento**
 
-El procedimiento técnico es pasarle a un modelo de redes neuronales el 80% de las imágenes con su diagnóstico (tras haberlas tratado) para que entrene con ellas y luego sea capaz de reconocer si existe o no un tumor en una imagen que nunca ha visto.
-
-El 20% restante de las imágenes nos va a servir para valorar la calidad del modelo. Se las vamos a pasar, el modelo nos dará un resultado y compararemos este con el diagnóstico real de esas imágenes.
+El procedimiento es pasarle a un modelo de Machine Learning de redes neuronales las imágenes con su diagnóstico (tras haberlas tratado) para que entrene con ellas y luego sea capaz de reconocer si existe o no un tumor en una imagen que nunca ha visto.
 
 ## **Pasos**
 
@@ -28,27 +26,27 @@ En nuestro caso, a partir de varias funciones, se han tratado las imágenes para
 
 Imágenes originales
 
-![0-raw](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/0-raw.png)
+![0-raw](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/0-raw.png)
 
 Hacerlas cuadradas
 
-![1-squared](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/1-squared.png)
+![1-squared](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/1-squared.png)
 
 Redimensionarlas
 
-![2-resized](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/2-resized.png)
+![2-resized](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/2-resized.png)
 
 Pasarlas a escala de grises
 
-![3-grayscale](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/3-grayscale.png)
+![3-grayscale](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/3-grayscale.png)
 
 Aplicarles un filtro de mediana
 
-![4-filtered](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/4-filtered.png)
+![4-filtered](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/4-filtered.png)
 
 Pasarlas a blanco y negro
 
-![5-b&w](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/5-b&w.png)
+![5-b&w](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/5-b&w.png)
 
 
 Después de esto, se convirtió el conjunto de imágenes en un dataframe de Pandas, haciendo que cada fila del mismo estuviera compuesta por los valores de cada pixel de la imagen. Dividí el dataset en dos partes: una para entrenar el modelo (80%) y otra para el test, es decir, para comprobar su calidad (20%).
@@ -57,7 +55,7 @@ Después de esto, se convirtió el conjunto de imágenes en un dataframe de Pand
 
 Es una red neuronal que recorre los datos 10 veces para aprender de ellos. Lo evaluamos a partir del score (80%-85%) y la confusion matrix:
 
-
+![30-2-6-13](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/30-2-6-13.png)
 
 En ella podemos ver el diagnóstico real en el eje de ordenadas y el diagnóstico predecido en el eje de abscisas. Vemos que, de los 32 tumores reales, el modelo ha acertado 30 y ha predicho 2 como no tumor, y de los 19 no tumores, ha acertado 13 y ha fallado 6, es decir, que ha dado por tumores 6 casos que no lo son.
 
