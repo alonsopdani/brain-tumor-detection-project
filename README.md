@@ -27,7 +27,9 @@ Las imágenes son datos, ya que cada píxel contiene información acerca de su c
 En nuestro caso, a partir de varias funciones, se han tratado las imágenes para que sean un input más legible para el modelo y este sea capaz de predecir con mayor precisión.
 
 Imágenes originales
-![0-raw](![0-raw](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/0-raw.png)
+
+![0-raw](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/0-raw.png)
+
 Hacerlas cuadradas
 Redimensionarlas
 Pasarlas a escala de grises
