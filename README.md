@@ -31,18 +31,24 @@ Imágenes originales
 ![0-raw](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/0-raw.png)
 
 Hacerlas cuadradas
+
+![1-squared](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/1-squared.png)
+
 Redimensionarlas
+
+![2-resized](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/2-resized.png)
+
 Pasarlas a escala de grises
+
+![3-grayscale](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/3-grayscale.png)
+
 Aplicarles un filtro de mediana
+
+![4-filtered](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/4-filtered.png)
+
 Pasarlas a blanco y negro
 
-
-
-
-
-
-
-
+![5-b&w](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/pics/5-b&w.png)
 
 
 Después de esto, se convirtió el conjunto de imágenes en un dataframe de Pandas, haciendo que cada fila del mismo estuviera compuesta por los valores de cada pixel de la imagen. Dividí el dataset en dos partes: una para entrenar el modelo (80%) y otra para el test, es decir, para comprobar su calidad (20%).
