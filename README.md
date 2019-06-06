@@ -1,8 +1,8 @@
-#**Detección de tumores cerebrales en imágenes de resonancias magnéticas:**
+# **Detección de tumores cerebrales en imágenes de resonancias magnéticas:**
 
 El proyecto se trata de un programa que, a partir de una imagen de resonancia magnética de cerebro, da un diagnóstico cuyo resultado puede ser que existe o no un tumor en ese cerebro.
 
-##**Objetivos**
+## **Objetivos**
 
 El resultado al pasarle una imágen es un porcentaje de que exista tumor en ese cerebro, por tanto, los médicos podrían ahorrarse el tiempo invertido en ver todas las resonancias magnéticas e irse directamente a las que tienen un cierto porcentaje mínimo de tener un tumor, por ejemplo, > 10%.
 
