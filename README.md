@@ -8,19 +8,19 @@ El resultado al pasarle una imágen es un porcentaje de que exista tumor en ese 
 
 Ayuda de la máquina a detectar tumores. Si se perfecciona este programa hasta el punto de que el porcentaje de acierto es muy alto, la tarea de detectar tumores puede pasar del médico a la máquina, ya que esta podría tener más memoria y capacidad para hacerlo que una persona humana. Este sería un caso claro de la cooperación entre humanos e inteligencia artificial.
     
-##**El dataset**
+## **El dataset**
 
 El dataset es un conjunto de MRIs, una carpeta con tumores y otra sin tumores.
 
-##**Procedimiento técnico**
+## **Procedimiento técnico**
 
 El procedimiento técnico es pasarle a un modelo de redes neuronales el 80% de las imágenes con su diagnóstico (tras haberlas tratado) para que entrene con ellas y luego sea capaz de reconocer si existe o no un tumor en una imagen que nunca ha visto.
 
 El 20% restante de las imágenes nos va a servir para valorar la calidad del modelo. Se las vamos a pasar, el modelo nos dará un resultado y compararemos este con el diagnóstico real de esas imágenes.
 
-##**Pasos**
+## **Pasos**
 
-###Feature engineering (tratamiento de imágenes):
+### **Feature engineering (tratamiento de imágenes):**
 
 Las imágenes son datos, ya que cada píxel contiene información acerca de su color. Por ello, esta información se puede modificar para que la imagen cambie. Esto es lo que pasa, por ejemplo, cuando aplicáis filtros a una foto que vais a subir a Instagram.
 
@@ -44,7 +44,7 @@ Pasarlas a blanco y negro
 
 Después de esto, se convirtió el conjunto de imágenes en un dataframe de Pandas, haciendo que cada fila del mismo estuviera compuesta por los valores de cada pixel de la imagen. Dividí el dataset en dos partes: una para entrenar el modelo (80%) y otra para el test, es decir, para comprobar su calidad (20%).
         
-###Algoritmo de Machine Learning
+### **Algoritmo de Machine Learning**
 
 Es una red neuronal que recorre los datos 10 veces para aprender de ellos. Lo evaluamos a partir del score (80%-85%) y la confusion matrix:
 
@@ -54,7 +54,7 @@ En ella podemos ver el diagnóstico real en el eje de ordenadas y el diagnóstic
 
 Lo más grave es que pase por alto tumores, sin embargo, lo que más le cuesta es acertar los no tumores.
 
-##**Próximos pasos**
+## **Próximos pasos**
 
 Llevar a cabo un tratamiento de las imágenes más profundo y aplicar otros modelos de Machine Learning para intentar que el modelo aumente su porcentaje de acierto.
 
