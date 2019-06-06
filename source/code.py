@@ -30,7 +30,7 @@ def show_images(img1, img2, name):
     plt.subplot(1,2,2)
     plt.imshow(img2, cmap="gray")
     plt.title('Brain without tumor')
-    plt.savefig('./pics/{}'.format(name))
+    plt.savefig('../images/{}'.format(name))
     plt.show()
 
 images_to_show = (33, 18)
@@ -41,8 +41,8 @@ def import_data():
     def read_images(path):
         return [Image.open(file) for file in glob.glob(path)]
 
-    path_y = './brain-mri-images-for-brain-tumor-detection/yes/*'
-    path_n = './brain-mri-images-for-brain-tumor-detection/no/*'
+    path_y = '../input/brain-mri-images-for-brain-tumor-detection/yes/*'
+    path_n = '../input/brain-mri-images-for-brain-tumor-detection/no/*'
 
     images_y = read_images(path_y)
     images_n = read_images(path_n)
@@ -270,7 +270,7 @@ def evaluate_model(model, X_test, y_test):
     for i in range(2):
         for j in range(2):
             plt.text(j,i, str(s[i][j])+" = "+str(cm[i][j]))
-    plt.savefig('./pics/cm')
+    plt.savefig('../output/cm')
     plt.show()
 
     return None
