@@ -14,7 +14,7 @@ El dataset es un conjunto de MRIs, una carpeta con tumores y otra sin tumores.
 
 ## **Procedimiento**
 
-El procedimiento es pasarle a un modelo de Machine Learning de redes neuronales las imágenes con su diagnóstico (tras haberlas tratado) para que entrene con ellas y luego sea capaz de reconocer si existe o no un tumor en una imagen que nunca ha visto.
+El procedimiento es tratar las imágenes para que el programa pueda aprender de ellas lo mejor posible y pasárselas a un modelo de Machine Learning de redes neuronales para que entrene con ellas y luego sea capaz de reconocer si existe o no un tumor en una imagen que nunca ha visto.
 
 ## **Pasos**
 
