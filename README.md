@@ -20,9 +20,7 @@ First I had to do some image processing, and then pass 80% of these images to a 
 
 The other 20% of the images are used to test the model. We will compare their real diagnosis to the one that the model gives, to see how it performs.
 
-## **Pasos**
-
-### Feature engineering (tratamiento de imágenes)
+## **Steps**
 
 Eventually, images are data, since they contain pixels which also contain information about their color. We can manipulate this information to achieve our goals which, in this case, are making the images better for the model to learn. The objective here is to make all the images as similar as possible, so that the actual discriminating feature is the presence or not of a tumor, and not the difference of shape, size, color… of the images.
 
