@@ -1,67 +1,68 @@
-# **Detección de tumores cerebrales en imágenes de resonancias magnéticas:**
+# **Brain tumor detection project**
 
-El proyecto se trata de un programa que, a partir de una imagen de resonancia magnética de cerebro, da un diagnóstico cuyo resultado puede ser que existe o no un tumor en ese cerebro.
+This project consists on a program which receives a brain Magnetic Resonance Image (MRI) and gives a diagnosis that can be the presence or not of a tumor in that brain.
 
-## **Objetivos**
+## **Goals**
 
-Ahorro de tiempo de los médicos: el resultado al pasarle una imágen es un porcentaje de que exista tumor en ese cerebro, por tanto, los médicos podrían ahorrarse el tiempo invertido en ver todas las resonancias magnéticas e irse directamente a las que tienen un cierto porcentaje mínimo de tener un tumor, por ejemplo, > 10%.
+The result when we give an image to the program is a probability that the brain contains a tumor, so we could prioritize the patients which magnetic resonance have higher probabilities to have one, and treat them first.
 
-Ayuda de la máquina a detectar tumores. Si se perfecciona este programa hasta el punto de que el porcentaje de acierto es muy alto, la tarea de detectar tumores puede pasar del médico a la máquina, ya que esta podría tener más memoria y capacidad para hacerlo que una persona humana. Este sería un caso claro de la cooperación entre humanos e inteligencia artificial.
+Another goal could be to transfer the duty of seeing these images from the doctors to the machine, which eventually could have more capability of detection, as it have learnt by watching a large quantity of images knowing their real diagnosis. This would be a clear example of cooperation between humans and machines.
     
-## **El dataset**
+## **The dataset**
 
-El dataset es un conjunto de MRIs, una carpeta con tumores y otra sin tumores.
+The dataset used in the project is a bunch of images with and without tumors, from which we know the real diagnosis. You can find it here:
 
-## **Procedimiento**
+https://www.kaggle.com/navoneel/brain-mri-images-for-brain-tumor-detection
 
-El procedimiento es tratar las imágenes para que el programa pueda aprender de ellas lo mejor posible y pasárselas a un modelo de Machine Learning de redes neuronales para que entrene con ellas y luego sea capaz de reconocer si existe o no un tumor en una imagen que nunca ha visto.
+## **Technical procedure**
+
+First I had to do some image processing, and then pass 80% of these images to a neural network, make it learn and be capable of making an accurate diagnosis of a new image.
+
+The other 20% of the images are used to test the model. We will compare their real diagnosis to the one that the model gives, to see how it performs.
 
 ## **Pasos**
 
 ### Feature engineering (tratamiento de imágenes)
 
-Las imágenes son datos, ya que cada píxel contiene información acerca de su color. Por ello, esta información se puede modificar para que la imagen cambie. Esto es lo que pasa, por ejemplo, cuando aplicáis filtros a una foto que vais a subir a Instagram.
+Eventually, images are data, since they contain pixels which also contain information about their color. We can manipulate this information to achieve our goals which, in this case, are making the images better for the model to learn. The objective here is to make all the images as similar as possible, so that the actual discriminating feature is the presence or not of a tumor, and not the difference of shape, size, color… of the images.
 
-En nuestro caso, a partir de varias funciones, se han tratado las imágenes para que sean un input más legible para el modelo y este sea capaz de predecir con mayor precisión.
-
-Imágenes originales
+Original images
 
 ![0-raw](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/0-raw.png)
 
-Hacerlas cuadradas
+Squaring
 
 ![1-squared](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/1-squared.png)
 
-Redimensionarlas
+Resizing
 
 ![2-resized](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/2-resized.png)
 
-Pasarlas a escala de grises
+Grayscale
 
 ![3-grayscale](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/3-grayscale.png)
 
-Aplicarles un filtro de mediana
+Median filter
 
 ![4-filtered](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/4-filtered.png)
 
-Pasarlas a blanco y negro
+Black and white
 
 ![5-b&w](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/5-b&w.png)
 
+At this point, each image is a 2-dimension Numpy array with 128 x 128 shape. In order to put all the images together in a Pandas dataframe, I had to flatten each array so the dimension is 1 and its shape is 16.384.
 
-Después de esto, se convirtió el conjunto de imágenes en un dataframe de Pandas, haciendo que cada fila del mismo estuviera compuesta por los valores de cada pixel de la imagen. Dividí el dataset en dos partes: una para entrenar el modelo (80%) y otra para el test, es decir, para comprobar su calidad (20%).
-        
-### Algoritmo de Machine Learning
-
-Es una red neuronal que recorre los datos 10 veces para aprender de ellos. Lo evaluamos a partir del score (80%-85%) y la confusion matrix:
+Once we have these dataframe, we can train the model with 80% of the images, and test it with the other 20%. The result of testing is the following Confusion Matrix:
 
 ![30-2-6-13](https://github.com/alonsopdani/brain-tumor-detection-project/blob/master/images/30-2-6-13.png)
 
-En ella podemos ver el diagnóstico real en el eje de ordenadas y el diagnóstico predecido en el eje de abscisas. Vemos que, de los 32 tumores reales, el modelo ha acertado 30 y ha predicho 2 como no tumor, y de los 19 no tumores, ha acertado 13 y ha fallado 6, es decir, que ha dado por tumores 6 casos que no lo son.
+We can see the actual diagnosis on y-axis and the predicted diagnosis on the x-axis. We can see that the model has learnt better to detect the tumors than the not tumors. It could be because the dataset contained more tumor images than not tumor images.
 
-Lo más grave es que pase por alto tumores, sin embargo, lo que más le cuesta es acertar los no tumores.
+## **Next steps**
 
-## **Próximos pasos**
+Related to the previous section, we could carry out some oversampling techniques to make our dataset have the same information about tumors and not tumors.
 
-Llevar a cabo un tratamiento de las imágenes más profundo y aplicar otros modelos de Machine Learning para intentar que el modelo aumente su porcentaje de acierto.
+We could also use more advanced image processing techniques to make the images even better for the model to train.
+
+Finally, I would like to research about more complex neural networks than the one I used (the one proposed by Keras), to try to make our accuracy better.
 
